@@ -13,7 +13,7 @@ ip = "192.168.1.208"
 port = 5000
 start_time = time.time()
 # seconds
-time_limit = 60
+time_limit = 10
 
 # Example length required by the model
 sequence_length = 500  
@@ -29,7 +29,7 @@ buffered_df = buffered_df.fillna(0)
 arr = []
 buffer_obj = []
 def eeg_handler(address: str,*args):
-    if round(time.time() - start_time) < 120:
+    if round(time.time() - start_time) < time_limit:
         printStr = ''
         global arr
         global buffer_obj
@@ -54,7 +54,7 @@ def eeg_handler(address: str,*args):
 arr_2 = []
 buffer_obj_2 = []
 def eeg_handler2(address: str,*args):
-    if round(time.time() - start_time) < 120:
+    if round(time.time() - start_time) < time_limit:
         printStr = ''
         global arr_2
         global buffer_obj_2
