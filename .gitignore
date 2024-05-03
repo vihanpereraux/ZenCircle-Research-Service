@@ -1,6 +1,7 @@
 OpenVoice
 XTTS
 data_process
+model.joblib
 
 # Logs
 logs

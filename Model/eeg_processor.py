@@ -7,13 +7,17 @@ import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from collections import Counter
+from pymongo import MongoClient
+
+# from db_connection import update_user_data
 
 
 ip = "192.168.1.208"
 port = 5000
 start_time = time.time()
-# seconds
-time_limit = 10
+# seconds - based on user's need
+time_limit = 20
+
 
 # Example length required by the model
 sequence_length = 500  
@@ -166,7 +170,7 @@ def preprocess_data(df):
 
 
 def make_predictions(processed_data):
-    model = load('model.joblib')
+    model = load('E:\Dev\ZenCircle\ZenCircle-Research-Service\Model\model.joblib')
     predictions = model.predict(processed_data)
     print(predictions)
 
@@ -186,8 +190,31 @@ def make_predictions(processed_data):
     print("Most common string:", most_common_string, "Frequency:", most_common_count)
     print("Second most common string:", second_most_common_string, "Frequency:", second_most_common_count)
     
+    # executing to the mongo db
+    # update_user_data
+    update_user_data(most_common_string, second_most_common_string)
     
     
+
+# mongo client init
+client = MongoClient('mongodb://localhost:27017/')
+database = client['zen-circle-test-db']
+collection = database['users']
+
+
+# gets predicted data and stores in the db
+def update_user_data(most_common_string, second_most_common_string):
+    update_data = {
+            "$set": {
+            'username': 'vihanpereraux',
+            'eeg_predictions': [most_common_string, second_most_common_string]
+            }
+        }
+    collection.update_one({"username": 'vihanpereraux'}, update_data)
+    print("Executed !!!")
+    return True
+
+
 
 if __name__ == "__main__":
     dispatcher = dispatcher.Dispatcher()
