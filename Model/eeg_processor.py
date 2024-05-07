@@ -12,11 +12,11 @@ from pymongo import MongoClient
 # from db_connection import update_user_data
 
 
-ip = "192.168.1.208"
+ip = "172.20.10.12"
 port = 5000
 start_time = time.time()
 # seconds - based on user's need
-time_limit = 20
+time_limit = 60 * 3
 
 
 # Example length required by the model
@@ -52,7 +52,7 @@ def eeg_handler(address: str,*args):
     else:
         execute(buffer_obj)
         arr = []    
-        # server.shutdown()
+        server.shutdown()
 
         
 arr_2 = []
